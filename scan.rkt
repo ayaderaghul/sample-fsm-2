@@ -71,6 +71,9 @@
   (write-table data out)
   (close-output-port out))
 
+(define (out-mean data)
+  (out-data "mean" (map list data)))
+
 (define (out-rank day population n rank-file)
   [define ranking (rank population)]
   [define truncated (for/first
