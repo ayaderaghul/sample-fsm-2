@@ -26,7 +26,7 @@
   (match-define (automaton current c0 payoff table) a)
   (automaton c0 c0 0 table))
 
-(define (interact auto1 auto2 rounds-per-match)
+(define (interact auto1 auto2 rounds-per-match delta)
   (match-define (automaton current1 c1 payoff1 table1) auto1)
   (match-define (automaton current2 c2 payoff2 table2) auto2)
   (define-values (new1 p1 new2 p2 round-results)
@@ -40,7 +40,9 @@
       (define n1 (vector-ref v1 a2))
       (define n2 (vector-ref v2 a1))
       (define round-result (list p1 p2))
-      (values n1 (+ payoff1 p1) n2 (+ payoff2 p2) (cons round-result round-results))))
+      (values n1 (+ payoff1 (* (expt delta _) p1))
+              n2 (+ payoff2 (* (expt delta _) p2))
+              (cons round-result round-results))))
   (values (reverse round-results) (automaton new1 c1 p1 table1) (automaton new2 c2 p2 table2)))
 
 (define PAYOFF-TABLE
@@ -81,3 +83,75 @@
     [(zero? r) (immutable-set a 0 (random s))]
     [(= 1 (modulo r 3)) (immutable-set a r (random 2))]
     [else (immutable-set a r (random s))])))
+
+
+;; EXPORT MATHA CODE
+
+(define (generate-state-code table)
+  (define l (vector-length table))
+  (define state-numbers (vector-map state-action table))
+  (define state-labels
+    (vector-map (lambda (x) (if (zero? x) "C" "D"))
+         state-numbers))
+  (define state-code
+    (apply string-append
+           (add-between
+            (for/list ([i l])
+              (string-append (number->string i) " -> Placed[\"~a\", Center]"))
+            ", ")))
+  (apply format
+         (list* state-code (vector->list state-labels))))
+
+(define (scan-duplicate dispatch)
+  (match-define (vector a1 a2) dispatch)
+  (if (= a1 a2) (list "\"C,D\"" "\"C,D\"") (list "\"C\"" "\"D\"")))
+
+(define (generate-dispatch-code state-i dispatch)
+  (define l (vector-length dispatch))
+  (define ending (scan-duplicate dispatch))
+  (remove-duplicates
+   (for/list ([i l])
+     (string-append
+      "Labeled["
+      (number->string state-i)
+      " -> "
+      (number->string (vector-ref dispatch i))
+      ", "
+      (list-ref ending i)
+      "] \n"))))
+
+(define (generate-dispatch-codes table)
+  (define dispatches (vector-map state-dispatch table))
+  (define dispatch-code
+    (for/list ([i (vector-length dispatches)])
+      (generate-dispatch-code i (vector-ref dispatches i))))
+  (apply string-append (add-between (flatten dispatch-code) ", ")))
+
+(define (generate-matha-code au name)
+  (match-define (automaton current initial payoff states) au)
+  (string-append
+   "VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];\n"
+   name "Graph =\n"
+   "   Graph[{-1 -> " (number->string initial) " ,\n"
+   (generate-dispatch-codes states)
+   "     },\n"
+   "   EdgeShapeFunction -> \n"
+   "    GraphElementData[\"EdgeShapeFunction\", \"FilledArrow\"],\n"
+   "   VertexStyle -> LightGray,\n"
+   "   VertexShapeFunction -> VertexCircle,\n"
+   "   VertexLabels -> {" (generate-state-code states) "}\n"
+   "   ];\n"
+   "G = Graphics[{White, Disk[{0, 0}, 0.2]}];\n"
+   "Show[" name "Graph, G]\n"
+   "(*Export[\"" name ".png\",S]*)\n \n"))
+
+(define (export-matha-code au name)
+  (with-output-to-file "auto-code.nb"
+    (lambda () (printf (generate-matha-code au name)))
+    #:exists 'append))
+
+(define (export-matha-codes a-list name)
+  (for ([i (length a-list)])
+    (export-matha-code (list-ref a-list i)
+                       (string-append (symbol->string name)
+                                      (number->string i)))))

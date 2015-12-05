@@ -12,7 +12,7 @@
   (collect-garbage)
   (collect-garbage)
   (define means
-    (time (evolve (build-random-population 100) 5000 10 20 1)))
+    (time (evolve (build-random-population 100) 7000 10 20 1 1)))
   (define ps (simulation->lines means))
   (define h3 (function (lambda (x) 3) #:color "blue"))
   (define h1 (function (lambda (x) 1) #:color "red"))
@@ -23,16 +23,16 @@
   (define coors (for/list ([d (in-list data)][n (in-naturals)]) (list n d)))
   (lines coors))
 
-(define (evolve population cycles speed rounds-per-match mutation)
+(define (evolve population cycles speed rounds-per-match delta mutation)
   (cond
    [(zero? cycles) '()]
-   [else (define p2 (match-up* population rounds-per-match))
+   [else (define p2 (match-up* population rounds-per-match delta))
          (define pp (population-payoffs p2))
          (define p3 (regenerate p2 speed))
          (mutate* p3 mutation)
          (out-rank cycles p3 10 "rank")
          (cons (relative-average pp rounds-per-match)
-               (evolve p3 (- cycles 1) speed rounds-per-match mutation))]))
+               (evolve p3 (- cycles 1) speed rounds-per-match delta mutation))]))
 
 (module+ five
   (main)
