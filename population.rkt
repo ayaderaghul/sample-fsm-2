@@ -6,7 +6,7 @@
 (define DEF-COO 2)
 
 (define (build-random-population n)
-  (define v (build-vector n (lambda (_) (make-random-automaton DEF-COO))))
+  (define v (build-vector n (lambda (_) (make-random-automaton (+ 1 (random 10))))))
   (cons v v))
 
 (define (population-payoffs population0)
