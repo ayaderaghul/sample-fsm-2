@@ -61,12 +61,15 @@
       (list action (vector->list dispatch))))
   (flatten (list initial body)))
 
+(define STATE-LENGTH 3)
+
 (define (recover au)
-  (define s (/ (- (length au) 1) 3))
+  (define s (/ (- (length au) 1) STATE-LENGTH))
   (define body (drop au 1))
   (define recovered-body
     (for/vector ([i s])
-      (state (list-ref body (* 3 i)) (list->vector (take (drop body (+ 1 (* 3 i))) 2)))))
+      (state (list-ref body (* STATE-LENGTH i))
+             (list->vector (take (drop body (+ 1 (* STATE-LENGTH i))) actions#)))))
   (automaton (first au) (first au) 0 recovered-body))
 
 (define (immutable-set a-list a-posn a-value)
@@ -77,11 +80,11 @@
 (define (mutate au)
   (define a (flatten-automaton au))
   (define r (random (length a)))
-  (define s (/ (- (length a) 1) 3))
+  (define s (/ (- (length a) 1) STATE-LENGTH))
   (recover
    (cond
     [(zero? r) (immutable-set a 0 (random s))]
-    [(= 1 (modulo r 3)) (immutable-set a r (random 2))]
+    [(= 1 (modulo r STATE-LENGTH)) (immutable-set a r (random actions#))]
     [else (immutable-set a r (random s))])))
 
 
