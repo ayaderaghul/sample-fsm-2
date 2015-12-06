@@ -13,6 +13,10 @@
 
 | To do         | Date          | By    | Note |
 | ------------- |:-------------:| ----- | ---- |
-| arbitrary number of states      | right-aligned | $1600 | |
-| col 2 is      | centered      |   $12 | |
-| zebra stripes | are neat      |    $1 | |
+| arbitrary number of states      | x | chi | |
+| add delta      | x     |    | |
+| record data | x      |     | |
+| add mutation | x      |     | |
+| out-rank doesnt return if 100 | x      |     | |
+| ask for permission to customize | x      |     | |
+| CAPITALS for constants | x      |     | ||
