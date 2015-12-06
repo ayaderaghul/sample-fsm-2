@@ -6,6 +6,6 @@
 | add delta      | x     |    | |
 | record data | x      |     | |
 | add mutation | x      |     | |
-| out-rank doesnt return \ if 100 automata | x      |     | the body hasnt been \ evaluated yet (i never < n) |
+| out-rank doesnt return <br> if 100 automata | x      |     | the body hasnt been evaluated yet (i never < n) |
 | ask for permission to customize |       |     | |
 | CAPITALS for constants | 7 Dec      |     | ||
