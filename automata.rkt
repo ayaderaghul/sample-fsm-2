@@ -17,10 +17,16 @@
 
 (define (defects p0)
   (automaton 0 0 p0 (vector (state DEFECT (vector 0 0)))))
-
 (define (cooperates p0)
   (define t (vector (state COOPERATE (vector COOPERATE COOPERATE))))
   (automaton COOPERATE COOPERATE p0 t))
+
+(define (tit-for-tat p0)
+  (automaton 0 0 p0 (vector (state COOPERATE (vector 0 1))
+                            (state DEFECT (vector 0 1)))))
+(define (grim-trigger p0)
+  (automaton 0 0 p0 (vector (state COOPERATE (vector 0 1))
+                            (state DEFECT (vector 1 1)))))
 
 (define (clone a)
   (match-define (automaton current c0 payoff table) a)

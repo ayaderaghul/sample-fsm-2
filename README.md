@@ -10,3 +10,4 @@
 | ask for permission to customize |       |     | |
 | CAPITALS for constants | 7 Dec      |     | |
 | readme as todo | 7 Dec | | |
+| add classic automata | 8 Dec |||

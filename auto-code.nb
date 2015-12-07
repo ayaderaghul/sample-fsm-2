@@ -1,42 +1,65 @@
 VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
-b0Graph =
-   Graph[{-1 -> 1 ,
-Labeled[0 -> 1, "C"] 
-, Labeled[0 -> 2, "D"] 
-, Labeled[1 -> 3, "C"] 
-, Labeled[1 -> 1, "D"] 
-, Labeled[2 -> 2, "C"] 
-, Labeled[2 -> 1, "D"] 
-, Labeled[3 -> 3, "C,D"] 
+a0Graph =
+   Graph[{-1 -> 0 ,
+Labeled[0 -> 0, "C,D"] 
      },
    EdgeShapeFunction -> 
     GraphElementData["EdgeShapeFunction", "FilledArrow"],
    VertexStyle -> LightGray,
    VertexShapeFunction -> VertexCircle,
-   VertexLabels -> {0 -> Placed["D", Center], 1 -> Placed["D", Center], 2 -> Placed["D", Center], 3 -> Placed["C", Center]}
+   VertexLabels -> {0 -> Placed["D", Center]}
    ];
 G = Graphics[{White, Disk[{0, 0}, 0.2]}];
-Show[b0Graph, G]
-(*Export["b0.png",S]*)
+Show[a0Graph, G]
+(*Export["a0.png",S]*)
  
 VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
-b1Graph =
-   Graph[{-1 -> 3 ,
-Labeled[0 -> 3, "C,D"] 
-, Labeled[1 -> 2, "C"] 
-, Labeled[1 -> 0, "D"] 
-, Labeled[2 -> 0, "C"] 
-, Labeled[2 -> 3, "D"] 
-, Labeled[3 -> 1, "C"] 
-, Labeled[3 -> 3, "D"] 
+a1Graph =
+   Graph[{-1 -> 0 ,
+Labeled[0 -> 0, "C,D"] 
      },
    EdgeShapeFunction -> 
     GraphElementData["EdgeShapeFunction", "FilledArrow"],
    VertexStyle -> LightGray,
    VertexShapeFunction -> VertexCircle,
-   VertexLabels -> {0 -> Placed["D", Center], 1 -> Placed["D", Center], 2 -> Placed["D", Center], 3 -> Placed["C", Center]}
+   VertexLabels -> {0 -> Placed["C", Center]}
    ];
 G = Graphics[{White, Disk[{0, 0}, 0.2]}];
-Show[b1Graph, G]
-(*Export["b1.png",S]*)
+Show[a1Graph, G]
+(*Export["a1.png",S]*)
+ 
+VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
+a2Graph =
+   Graph[{-1 -> 0 ,
+Labeled[0 -> 0, "C"] 
+, Labeled[0 -> 1, "D"] 
+, Labeled[1 -> 0, "C"] 
+, Labeled[1 -> 1, "D"] 
+     },
+   EdgeShapeFunction -> 
+    GraphElementData["EdgeShapeFunction", "FilledArrow"],
+   VertexStyle -> LightGray,
+   VertexShapeFunction -> VertexCircle,
+   VertexLabels -> {0 -> Placed["C", Center], 1 -> Placed["D", Center]}
+   ];
+G = Graphics[{White, Disk[{0, 0}, 0.2]}];
+Show[a2Graph, G]
+(*Export["a2.png",S]*)
+ 
+VertexCircle[{xc_, yc_}, name_, {w_, h_}] := Disk[{xc, yc}, .1];
+a3Graph =
+   Graph[{-1 -> 0 ,
+Labeled[0 -> 0, "C"] 
+, Labeled[0 -> 1, "D"] 
+, Labeled[1 -> 1, "C,D"] 
+     },
+   EdgeShapeFunction -> 
+    GraphElementData["EdgeShapeFunction", "FilledArrow"],
+   VertexStyle -> LightGray,
+   VertexShapeFunction -> VertexCircle,
+   VertexLabels -> {0 -> Placed["C", Center], 1 -> Placed["D", Center]}
+   ];
+G = Graphics[{White, Disk[{0, 0}, 0.2]}];
+Show[a3Graph, G]
+(*Export["a3.png",S]*)
  
